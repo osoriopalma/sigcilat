@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+</head>
+<body>
+  <h2>Iniciar sesión</h2>
+
+  <div th:if="${param.error}" style="color:red;">
+    Usuario o contraseña inválidos.
+  </div>
+  <div th:if="${param.logout}" style="color:green;">
+    Sesión cerrada correctamente.
+  </div>
+
+  <form th:action="@{/login}" method="post">
+    <!-- CSRF -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <label>Usuario:</label>
+    <input type="text" name="username" required><br>
+
+    <label>Contraseña:</label>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Entrar</button>
+  </form>
+</body>
+</html>

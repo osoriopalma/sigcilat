@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout :: layout(content=~{::content}, pageTitle='Dashboard')}">
+
+<content>
+  <div class="container">
+
+    <h2 class="page-title">SIGCILAT - Dashboard</h2>
+    <p class="small">Usuario: <b sec:authentication="name"></b></p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Total ciudadanos</h3>
+        <div class="value" th:text="${totalCiudadanos}">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Ciudadanos activos</h3>
+        <div class="value" th:text="${ciudadanosActivos}">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Ciudadanos inactivos</h3>
+        <div class="value" th:text="${ciudadanosInactivos}">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Total usuarios</h3>
+        <div class="value" th:text="${totalUsuarios}">0</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Accesos rápidos</h3>
+      <div class="actions">
+        <a class="btn" th:href="@{/ciudadanos}">Ciudadanos</a>
+        <a class="btn" th:href="@{/ciudadanos/inactivos}">Ciudadanos inactivos</a>
+
+        <a class="btn" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/usuarios}">
+          Administración - Usuarios
+        </a>
+      </div>
+    </div>
+
+  </div>
+</content>
+</html>

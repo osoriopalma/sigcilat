@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(content=~{::content}, pageTitle='Usuarios (Admin)')}">
+
+    <body>
+        <div th:fragment="content">
+            <h1>Ciudadanos inactivos</h1>
+            <form th:action="@{/ciudadanos/inactivos}" method="get" style="margin: 12px 0;">
+                <input type="text" name="q" placeholder="Buscar por nombre o CURP" th:value="${q}">
+                <button type="submit">Buscar</button>
+                <a th:if="${q != null and !#strings.isEmpty(q)}" th:href="@{/ciudadanos/inactivos}">Limpiar</a>
+            </form>
+
+            <p>
+                <a href="/ciudadanos">← Volver a activos</a>
+            </p>
+
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Clave</th>
+                        <th>Nombre</th>
+                        <th>CURP</th>
+                        <th>Fecha nacimiento</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Domicilio</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="c : ${ciudadanos}">
+                        <td th:text="${c.id}">1</td>
+                        <td th:text="${c.claveConsecutiva}">1</td>
+                        <td th:text="${c.nombre + ' ' + c.apellidoPaterno + ' ' + c.apellidoMaterno}">Nombre</td>
+                        <td th:text="${c.curp}">CURP</td>
+                        <td th:text="${c.fechaNacimiento}">2000-01-01</td>
+                        <td th:text="${c.telefono != null ? c.telefono : '-'}">-</td>
+                        <td th:text="${c.correo != null ? c.correo : '-'}">-</td>
+                        <td th:text="${c.domicilio}">---</td>
+                        <td th:text="${c.activo}">false</td>
+
+                        <td>
+                            <form th:action="@{/ciudadanos/{id}/reactivar(id=${c.id})}" method="post"
+                                  onsubmit="return confirm('¿Seguro que deseas reactivar a este ciudadano?');">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <button type="submit">Reactivar</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content, pageTitle)">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${pageTitle} ?: 'SIGCILAT'">SIGCILAT</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- si luego agregas css -->
+        <link rel="stylesheet" th:href="@{/css/app.css}">
+    </head>
+    <body>
+
+        <header style="padding:12px;border-bottom:1px solid #ddd;">
+            <div style="display:flex;gap:16px;align-items:center;justify-content:space-between;">
+                <div>
+                    <strong>SIGCILAT</strong>
+                    <span style="color:#666;margin-left:8px;" th:text="${pageTitle} ?: ''"></span>
+                </div>
+
+                <div>
+                    <span style="margin-right:10px;color:#444;">
+                        Usuario: <b th:text="${#authentication?.name}">---</b>
+                    </span>
+                    <form th:action="@{/logout}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit">Salir</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- aquí luego agregamos más módulos -->
+            <a th:href="@{/}" >Inicio</a>
+
+            <a th:href="@{/ciudadanos}">Ciudadanos</a>
+            <a th:href="@{/ciudadanos/inactivos}">Ciudadanos inactivos</a>
+
+            <!-- solo ADMIN -->
+            <a th:href="@{/admin/usuarios}"
+               th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                Admin: Usuarios
+            </a>
+        </nav>
+    </header>
+
+    <main style="padding:16px;">
+        <!-- Aquí se inyecta el contenido -->
+        <div th:replace="${content}"></div>
+    </main>
+
+    <footer style="padding:12px;border-top:1px solid #ddd;color:#777;">
+        <small>SIGCILAT • 2026</small>
+    </footer>
+
+</body>
+</html>
